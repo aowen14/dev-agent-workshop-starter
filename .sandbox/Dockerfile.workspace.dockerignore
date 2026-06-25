@@ -1,0 +1,11 @@
+.git
+.sandbox
+demo
+.venv
+.ruff_cache
+.pytest_cache
+__pycache__
+*.pyc
+frontend/node_modules
+frontend/dist
+.DS_Store

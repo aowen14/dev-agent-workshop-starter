@@ -1,0 +1,48 @@
+FROM python:3.12-slim
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+# --- System packages (root) ---
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      git curl ca-certificates postgresql-client sudo \
+    && rm -rf /var/lib/apt/lists/*
+
+# Node 22 + Claude Code CLI (installed globally so any user can run it)
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && npm install -g @anthropic-ai/claude-code \
+    && rm -rf /var/lib/apt/lists/*
+
+# uv (system-wide)
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
+    && mv /root/.local/bin/uv /usr/local/bin/uv \
+    && mv /root/.local/bin/uvx /usr/local/bin/uvx
+
+# --- Non-root user so `claude --dangerously-skip-permissions` is allowed ---
+RUN useradd -m -s /bin/bash -u 1000 agent \
+    && mkdir -p /workspace \
+    && chown agent:agent /workspace
+
+USER agent
+ENV HOME=/home/agent
+WORKDIR /workspace
+
+# Install python deps for cache friendliness (as agent)
+COPY --chown=agent:agent pyproject.toml uv.lock ./
+RUN uv sync --frozen --extra dev
+
+# Copy code (.dockerignore excludes .git, .sandbox, .venv, frontend/node_modules)
+COPY --chown=agent:agent . /workspace
+
+# Fresh git repo inside so `git diff` captures the agent's changes
+RUN git init -q \
+    && git config user.email "agent@sandbox.local" \
+    && git config user.name "Sandbox Agent" \
+    && git add -A \
+    && git commit -q -m "initial sandbox state"
+
+EXPOSE 8000
+
+CMD ["tail", "-f", "/dev/null"]

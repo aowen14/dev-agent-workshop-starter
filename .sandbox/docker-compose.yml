@@ -1,0 +1,33 @@
+name: workshop-sandbox
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: inventory
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d inventory"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  workspace:
+    build:
+      context: ..
+      dockerfile: .sandbox/Dockerfile.workspace
+    environment:
+      DATABASE_URL: postgresql://app:app@postgres:5432/inventory
+      TERM: xterm-256color
+      # Long-lived OAuth token minted via `claude setup-token` on the host.
+      # Required — file-mounted credentials don't work because Claude Code 2.x
+      # stores live tokens in macOS Keychain, not on disk. See .sandbox/README.md.
+      CLAUDE_CODE_OAUTH_TOKEN: ${CLAUDE_CODE_OAUTH_TOKEN:-}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    stdin_open: true
+    tty: true

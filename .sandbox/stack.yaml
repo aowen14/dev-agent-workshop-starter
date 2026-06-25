@@ -1,0 +1,32 @@
+name: dev-agent-workshop-starter
+description: Product inventory tracker — sandbox-ready for autonomous Claude Code rollouts
+
+substrate: docker-compose
+substrate_alternatives:
+  - docker-sbx     # docker sbx --template claude-code-docker
+  - microsandbox   # msb
+  - daytona        # daytona sandbox create
+
+services:
+  - name: api
+    url_in_sandbox: http://workspace:8000
+    url_on_host: http://localhost:8000
+    purpose: FastAPI backend — target of agent changes
+  - name: postgres
+    url_in_sandbox: postgresql://app:app@postgres:5432/inventory
+    purpose: Use this as DATABASE_URL — agent owns it inside the sandbox
+
+agent_brief: |
+  You are working inside an isolated sandbox copy of this codebase.
+  A Postgres database is running and ready for you at $DATABASE_URL.
+  You can run migrations, drop tables, break things — this environment
+  will be torn down. Your host machine is unaffected.
+
+capture:
+  - tests-before.txt
+  - tests-after.txt
+  - schema-before.sql
+  - schema-after.sql
+  - diff.patch
+  - claude-transcript.txt   # populated when running in non-interactive --print mode
+  - container-logs.txt
