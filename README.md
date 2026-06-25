@@ -66,6 +66,28 @@ claude
 
 Claude reads CLAUDE.md and understands the project. The `.claude/skills/` directory is intentionally empty — building skills is the exercise.
 
+## The Sandbox Demo (`/.sandbox` + `/demo`)
+
+This repo doubles as the live demo for the **Sandboxes for Agents** talk at the LA Claude Code Meetup. On top of the workshop track above, there's a second track: hand Claude Code an isolated docker-compose stack and watch it autonomously add real Postgres persistence to the in-memory app.
+
+```bash
+./demo/00-prewarm.sh        # warm the workspace image once before the talk
+./demo/40-good-path.sh      # full lifecycle: spin up → Claude works → tear down
+```
+
+Full step-by-step: see [`demo/RUNBOOK.md`](demo/RUNBOOK.md).
+Agent / engineer context for that folder: see [`demo/README.md`](demo/README.md).
+
+### One thing worth being honest about
+
+The demo argues a thesis — *agents inherit the environment you give them; the team with the best DevOps wins; sandboxes are also where you enforce policy* — and then bootstraps that argument with a bash script that spins the sandbox up, snapshots state, runs Claude inside, captures the artifact, and tears the sandbox down.
+
+The **outer sandbox boundary** has to be created by something other than Claude — that's bootstrap, not a thesis violation. But **everything happening inside the sandbox** (the Postgres lifecycle, the before/after snapshots, the migration verification) is in principle work that Claude itself should orchestrate. In the current demo, the bash script does it.
+
+The next iteration of this demo strips Postgres-the-service out of `docker-compose.yml`, bakes Postgres into the workspace image, and lets Claude start/stop/migrate it itself — so the agent transcript contains the whole environmental lifecycle and the bash shrinks to "boot workspace, run Claude, tear workspace down."
+
+For tonight's talk: the script handles the inner work. We acknowledge it. The structure of the demo still makes the boundary tangible (the audience watches the sandbox come into existence and disappear), and the captured trajectory still tells the story.
+
 ## License
 
 MIT
