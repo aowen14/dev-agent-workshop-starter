@@ -53,7 +53,9 @@ echo
 # argument (the `--` separator tells claude to treat what follows as the
 # initial user message). This is the same pattern the fabric CLI uses
 # (solutions_fabric_cli/workflows/run.py).
+# --model opus                     : use Opus by default (override with $CLAUDE_MODEL)
 # --setting-sources user           : ignore the workshop's project-level hooks
 # --dangerously-skip-permissions  : autonomous tool use — safe because we're in a sandbox
+MODEL="${CLAUDE_MODEL:-opus}"
 docker compose -p "$PROJECT" exec workspace \
-    claude --setting-sources user --dangerously-skip-permissions -- "$PROMPT"
+    claude --model "$MODEL" --setting-sources user --dangerously-skip-permissions -- "$PROMPT"
