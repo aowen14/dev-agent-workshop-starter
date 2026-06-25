@@ -56,3 +56,28 @@ uv run ruff format src/       # Auto-format
   - stock 1-10 → "Low Stock"
   - stock 0 → "Out of Stock"
 - Categories: Electronics, Software, Hardware, Accessories
+
+## UI Verification via Sub-Agent
+
+For context-efficient UI checking, delegate to the `ui-checker` sub-agent (Sonnet) instead of running agent-browser directly. This keeps browser output out of the main context.
+
+### When to Use
+- After backend/frontend changes that should reflect in the UI
+- When verifying API/UI consistency without consuming context on browser output
+- Prefer this over running agent-browser directly in the main session
+
+### Handoff Protocol
+1. Write `/tmp/check-ui-request.json`:
+   ```json
+   {"url": "http://localhost:5174", "checks": ["stats", "products", "rendering"], "context": "what changed"}
+   ```
+2. Launch the sub-agent with `model: sonnet`:
+   ```
+   prompt: "You are the ui-checker agent. Read .claude/agents/ui-checker.md for your full instructions, then execute the protocol."
+   ```
+3. Read `/tmp/check-ui-result.md` for the structured verdict.
+
+### Check Types
+- `stats` — Verify stats bar matches /api/stats
+- `products` — Verify product table row count matches /api/products
+- `rendering` — Check for HTML entity issues, broken layout

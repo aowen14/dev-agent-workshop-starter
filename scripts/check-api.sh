@@ -2,15 +2,15 @@
 # Quick API health check for /check-ui skill
 
 echo "=== Health ==="
-curl -s http://localhost:8000/api/health 2>&1
+curl -s http://localhost:8001/api/health 2>&1
 
 echo ""
 echo "=== Stats ==="
-curl -s http://localhost:8000/api/stats 2>&1
+curl -s http://localhost:8001/api/stats 2>&1
 
 echo ""
 echo "=== Products (sample) ==="
-curl -s http://localhost:8000/api/products 2>&1 | python3 -c "
+curl -s http://localhost:8001/api/products 2>&1 | python3 -c "
 import sys, json
 try:
     products = json.load(sys.stdin)
