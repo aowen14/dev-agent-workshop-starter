@@ -29,9 +29,13 @@ def list_products(
     category: Category | None = None,
     status: Status | None = None,
     search: str | None = None,
+    page: int = 1,
+    page_size: int | None = None,
 ) -> list[Product]:
     db = get_db()
-    return db.list_products(category=category, status=status, search=search)
+    return db.list_products(
+        category=category, status=status, search=search, page=page, page_size=page_size
+    )
 
 
 @app.get("/api/products/{product_id}")
