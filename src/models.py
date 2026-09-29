@@ -46,7 +46,7 @@ class Product(BaseModel):
     @computed_field
     @property
     def status(self) -> Status:
-        if self.stock > 10:
+        if self.stock > 12:
             return Status.IN_STOCK
         elif self.stock >= 1:
             return Status.LOW_STOCK
