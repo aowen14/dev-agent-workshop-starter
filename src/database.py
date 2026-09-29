@@ -45,6 +45,8 @@ class Database:
         category: Category | None = None,
         status: Status | None = None,
         search: str | None = None,
+        page: int = 1,
+        page_size: int | None = None,
     ) -> list[Product]:
         products = [self._to_product(p) for p in self._products.values()]
 
@@ -56,7 +58,12 @@ class Database:
             search_lower = search.lower()
             products = [p for p in products if search_lower in p.name.lower()]
 
-        return sorted(products, key=lambda p: p.name)
+        products = sorted(products, key=lambda p: p.name)
+        if page_size is not None:
+            # Pages are 1-based.
+            start = page * page_size
+            products = products[start : start + page_size]
+        return products
 
     def get_product(self, product_id: str) -> Product | None:
         data = self._products.get(product_id)
