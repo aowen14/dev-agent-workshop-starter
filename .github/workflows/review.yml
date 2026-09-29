@@ -1,0 +1,14 @@
+# Copy to .github/workflows/review.yml. Needs a CLAUDE_CODE_OAUTH_TOKEN or ANTHROPIC_API_KEY secret.
+name: Claude review
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_target:   # fork-PR notice only; never checks out or reviews PR code
+    types: [opened]
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  review:
+    uses: Teraflop-Inc/review-kit/.github/workflows/review.yml@base-workflow
+    secrets: inherit
