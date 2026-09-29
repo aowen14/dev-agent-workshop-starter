@@ -1,0 +1,26 @@
+# Adoption test for review-kit's review retro (ENG2-1655). Only a caller: schedule plus inputs.
+# Pinned to the PR branch for verification; the shipped template pins @v1.
+name: Review retro
+on:
+  push:
+    branches: [review-retro-adoption-test]
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  self:
+    uses: aowen14/review-kit/.github/workflows/review-retro.yml@aowen14/eng2-1655-review-retro
+    with:
+      prs: 20
+      dry_run: true
+    secrets: inherit
+  public-sample:
+    uses: aowen14/review-kit/.github/workflows/review-retro.yml@aowen14/eng2-1655-review-retro
+    with:
+      repository: anthropics/claude-code-action
+      prs: 15
+      dry_run: true
+    secrets: inherit
