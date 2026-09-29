@@ -1,0 +1,12 @@
+# Copy to .github/workflows/ac-check.yml. Needs LINEAR_API_KEY plus CLAUDE_CODE_OAUTH_TOKEN or ANTHROPIC_API_KEY.
+name: AC check
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  ac-check:
+    uses: aowen14/review-kit/.github/workflows/ac-check.yml@c89744473d454674a3bfee977a7f9bc2c46d53da  # review-kit ENG2-1656 branch; switch to @v1 after release
+    secrets: inherit
