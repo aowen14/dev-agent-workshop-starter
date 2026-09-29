@@ -10,5 +10,5 @@ permissions:
   pull-requests: write
 jobs:
   review:
-    uses: aowen14/review-kit/.github/workflows/review.yml@base-workflow
+    uses: aowen14/review-kit/.github/workflows/review.yml@v1
     secrets: inherit
