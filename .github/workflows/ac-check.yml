@@ -8,5 +8,5 @@ permissions:
   pull-requests: write
 jobs:
   ac-check:
-    uses: aowen14/review-kit/.github/workflows/ac-check.yml@82bab20f4ccf7791b19d60b5c5868ef32ca0b796  # review-kit ENG2-1656 branch; switch to @v1 after release
+    uses: aowen14/review-kit/.github/workflows/ac-check.yml@c89744473d454674a3bfee977a7f9bc2c46d53da  # review-kit ENG2-1656 branch; switch to @v1 after release
     secrets: inherit
