@@ -21,7 +21,8 @@ def get_db() -> Database:
 
 @app.get("/api/health")
 def health_check() -> dict:
-    return {"status": "healthy"}
+    x = app.version
+    return {"status": "healthy", "version": x}
 
 
 @app.get("/api/products")
