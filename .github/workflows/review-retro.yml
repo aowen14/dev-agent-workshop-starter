@@ -20,7 +20,7 @@ jobs:
   public-sample:
     uses: aowen14/review-kit/.github/workflows/review-retro.yml@aowen14/eng2-1655-review-retro
     with:
-      repository: anthropics/claude-code-action
-      prs: 15
+      repository: cli/cli
+      prs: 12
       dry_run: true
     secrets: inherit
