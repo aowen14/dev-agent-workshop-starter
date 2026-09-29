@@ -20,3 +20,4 @@
 - New or changed endpoints have a test that would fail without the change.
 - Pagination, slicing, and index math at the first and last page.
 - Errors from I/O, parsing, and external calls are handled or deliberately propagated.
+- Any change to an endpoint's params or response shape must update `frontend/src/api/client.ts` and `frontend/src/types.ts` to match. If it does not, that is Important.
