@@ -1,6 +1,6 @@
 # Dev Agent Workshop Starter
 
-A product inventory tracker built with FastAPI and React — designed as a workshop starter for learning Claude Code.
+A product inventory tracker built with FastAPI and React — designed as a hands-on workshop starter for learning Claude Code.
 
 ## Quick Start
 
