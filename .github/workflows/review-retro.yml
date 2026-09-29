@@ -2,8 +2,6 @@
 # Pinned to the PR branch for verification; the shipped template pins @v1.
 name: Review retro
 on:
-  push:
-    branches: [review-retro-adoption-test]
   schedule:
     - cron: "17 6 * * 1"
   workflow_dispatch:
